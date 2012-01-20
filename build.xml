@@ -1,0 +1,81 @@
+<project name="RegdarGameEngine" basedir="." default="main">
+	
+	<property name="main-class" value="com.twelvetwentyseven.regdar.server.RegdarServer"/>
+    <property name="src.dir"     value="src"/>
+	<property name="network.dir" value="src/com/twelvetwentyseven/regdar/server"/>
+	<property name="common.dir" value="src/com/twelvetwentyseven/regdar/common/"/>
+	<property name="client.dir" value="src/com/twelvetwentyseven/regdar/client/"/>
+	
+
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="serverClasses.dir" value="${build.dir}/classes/server"/>
+    <property name="jar.dir"     value="${build.dir}/jar"/>
+	
+    <property name="lib.dir"     value="lib"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+    	
+	 <target name="clean">
+	        <delete dir="${build.dir}"/>
+	 </target>
+
+	    <target name="compile">
+	    	<mkdir dir="${classes.dir}"/>
+	    	<!-- compile server -->
+	    	<mkdir dir="${classes.dir}/server"/>
+	        <javac srcdir="${src.dir}" destdir="${classes.dir}/server" classpathref="classpath" includeantruntime="false">
+				<include name="com/twelvetwentyseven/regdar/common/*.java"/>
+	        	<include name="com/twelvetwentyseven/regdar/server/*.java"/>
+	        </javac>
+	    	
+	    	<!-- compile client -->
+			<mkdir dir="${classes.dir}/client"/>
+	    	<javac srcdir="${src.dir}" destdir="${classes.dir}/client" classpathref="classpath" includeantruntime="false">
+	    		<include name="com/twelvetwentyseven/regdar/common/*.java"/>
+	    		<include name="com/twelvetwentyseven/regdar/client/*.java"/>
+	    		<include name="com/twelvetwentyseven/regdar/client/example/*.java"/>
+	    	</javac>
+	    </target>
+
+	    <target name="jar" depends="compile">
+	        <mkdir dir="${jar.dir}"/>
+	    	<!-- jar server -->
+	        <jar destfile="${jar.dir}/${ant.project.name}Server.jar" basedir="${classes.dir}/server">
+	            <manifest>
+	                <attribute name="Main-Class" value="${main-class}"/>
+	            </manifest>
+	        </jar>
+	    	<!-- jar client -->
+		    <jar destfile="${jar.dir}/${ant.project.name}Client.jar" basedir="${classes.dir}/client">
+		        <manifest>
+		            <attribute name="Main-Class" value="${main-class}"/>
+		        </manifest>
+		    </jar>
+	    </target>
+
+ 
+	    <target name="run" depends="jar">
+	    	<!-- Run Server -->
+	        <java fork="true" classname="${main-class}">
+	            <classpath>
+	                <path refid="classpath"/>
+	                <path location="${jar.dir}/${ant.project.name}Server.jar"/>
+	            </classpath>
+	        </java>
+	    	<!-- Run Client -->
+	        <java fork="true" classname="${main-class}">
+	            <classpath>
+	                <path refid="classpath"/>
+	                <path location="${jar.dir}/${ant.project.name}Client.jar"/>
+	            </classpath>
+	        </java>
+	    </target>
+
+	<target name="clean-build" depends="clean,jar"/>
+
+	    <target name="main" depends="clean,run"/>
+
+</project>
