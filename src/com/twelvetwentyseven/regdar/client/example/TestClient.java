@@ -37,6 +37,7 @@ import com.twelvetwentyseven.regdar.common.Network.UpdateNames;
 import com.twelvetwentyseven.regdar.common.Network.createUser;
 import com.twelvetwentyseven.regdar.common.Network.getConnectedUsers;
 import com.twelvetwentyseven.regdar.common.Network.login;
+import com.twelvetwentyseven.regdar.common.Network.passString;
 import com.twelvetwentyseven.regdar.common.User;
 
 
@@ -126,6 +127,14 @@ public class TestClient {
 					numConn.connectionID = client.getID();
 					client.sendTCP(numConn);
 				}
+				
+				// pass the string
+				if(tokens[0].equals("passString")){
+					passString pass = new passString();
+					pass.passedString = tokens[1];
+					pass.connectedID =  client.getID();
+				}
+				
 				// login
 				if(tokens[0].equals("login")) {
 					login l = new login();
@@ -133,6 +142,11 @@ public class TestClient {
 					l.password = tokens[2];
 					l.connectedID = client.getID();
 					client.sendTCP(l);
+				}
+				
+				// Get my id
+				if(tokens[0].equals("getID")){
+					chatFrame.addMessage(Integer.toString(client.getID()));
 				}
 			}
 		});

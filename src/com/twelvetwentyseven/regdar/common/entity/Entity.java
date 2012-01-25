@@ -1,5 +1,7 @@
 package com.twelvetwentyseven.regdar.common.entity;
 
+import com.twelvetwentyseven.regdar.common.CharacterRace;
+import com.twelvetwentyseven.regdar.common.CharacterType;
 import com.twelvetwentyseven.regdar.common.base.EntityType;
 import com.twelvetwentyseven.regdar.common.base.Location;
 
@@ -12,8 +14,6 @@ public abstract class Entity {
 	protected boolean alive;
 	// Active - is alive - and playing
 	protected boolean active;
-	protected int perception;
-	protected String name;
 	protected String description;
 	protected EntityAttributes myAttributes;
 	protected int strength;
@@ -25,6 +25,15 @@ public abstract class Entity {
 	protected int intelligence;
 	protected int stanima;
 	protected int type;
+	
+	// Entity attributes
+	// Need getters and setters
+	public String name = "";
+	public int HP = 0;
+	public String desc = "";
+	public int perception = 0;
+	public CharacterRace charRace;
+	public CharacterType charType;
 	
 	public Entity(Location myLocation) {
 		location = myLocation;

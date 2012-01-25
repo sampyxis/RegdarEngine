@@ -40,9 +40,11 @@ import com.twelvetwentyseven.regdar.common.Network.updateItems;
 import com.twelvetwentyseven.regdar.common.Network.updateLocation;
 import com.twelvetwentyseven.regdar.common.Network.UpdateNames;
 import com.twelvetwentyseven.regdar.common.User;
+import com.twelvetwentyseven.regdar.common.UserFactory;
 import com.twelvetwentyseven.regdar.common.entity.Player;
 import com.twelvetwentyseven.regdar.common.zone.Zone;
 import com.twelvetwentyseven.regdar.server.accounts.AccountActions;
+import com.twelvetwentyseven.regdar.server.actions.LoginAction;
 
 public class RegdarServer {
 	
@@ -116,31 +118,15 @@ public class RegdarServer {
                     if (object instanceof login) {
                     	// Login
                         login mLogin = (login)object;
-                        AccountActions account = null;
-						try {
-							account = new AccountActions();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-                        try {
-							if (account.loginUser(mLogin) == null) {
-							   	conn.close();
-							   	return;
-							  }
-							   else {
-							   	return;
-							 }
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+                        LoginAction lActions = new LoginAction();
+                        User newUser = null;
+                        newUser = lActions.loginUser(mLogin);
+                        if( newUser == null ){
+                        	conn.close();
+                        	return;
+                        }
+                        users.add(newUser);
+                        return;
 
                     }
                     
@@ -158,21 +144,9 @@ public class RegdarServer {
     					// Create a new User
     					User createdUser = null;
     					// Need to figure out how to get rid of the try /catch here
-						try {
-							createdUser = new User();
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-    					try {
-							createdUser.createUser(newUser.userName, newUser.userEmail, newUser.userPassword);
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+    					UserFactory uFactory = new UserFactory();
+						createdUser = uFactory.createUser(newUser.userName, newUser.userEmail, newUser.userPassword);
+						
     					// Add the user
     					users.add(createdUser);
     					// Get ready to send it back

@@ -20,4 +20,8 @@ public class ZoneManagement {
 	public Zone getCharacterZone(Character myChar) {
 		return zones.get(1); // get the first one for now
 	}
+	
+	public void putCharacterInZone(Character myChar){
+		
+	}
 }

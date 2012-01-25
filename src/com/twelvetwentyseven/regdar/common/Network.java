@@ -17,8 +17,10 @@ public class Network {
      // So, each side will have these
      static public void register (EndPoint endPoint) {
              Kryo kryo = endPoint.getKryo();
+             kryo.register(passString.class);
              kryo.register(login.class);
              kryo.register(createCharacter.class);
+             kryo.register(userCharacter.class);
              kryo.register(createAccount.class);
              kryo.register(createUser.class);
              kryo.register(getConnectedUsers.class);
@@ -46,6 +48,11 @@ public class Network {
 
      }
      
+     // Use one class for now to pass in the strings
+     static public class passString {
+    	 public String passedString;
+    	 public int connectedID;
+     }
      static public class login {
     	 public int connectedID;
     	 public String name;
@@ -54,6 +61,11 @@ public class Network {
      }
      
      static public class createCharacter {
+    	 public User myUser;
+    	 public GameCharacter myChar;
+     }
+     
+     static public class userCharacter {
     	 public User myUser;
     	 public GameCharacter myChar;
      }

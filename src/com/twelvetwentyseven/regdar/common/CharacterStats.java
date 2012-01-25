@@ -1,5 +1,6 @@
 package com.twelvetwentyseven.regdar.common;
 
+// Just the struct to pass around the stats
 public class CharacterStats {
 	public String name = "";
 	public int HP = 0;
@@ -11,6 +12,8 @@ public class CharacterStats {
 	public CharacterStats(){
 		// Create the states
 	}
+	
+	
 	
 	
 

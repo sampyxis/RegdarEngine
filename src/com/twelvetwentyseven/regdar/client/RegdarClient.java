@@ -46,6 +46,8 @@ public class RegdarClient {
         Network.register(client);
 
         // ThreadedListener runs the listener methods on a different thread.
+        // I need to redo the listener so we can send in strings too -
+        // I'll need to own the kryonet server code
         client.addListener(new ThreadedListener(new Listener() {
                 public void connected (Connection connection) {
                 }
